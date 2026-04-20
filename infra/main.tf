@@ -25,3 +25,22 @@ resource "azurerm_api_management" "main" {
   publisher_email = var.publisher_email
   sku_name            = "Developer_1"
 }
+resource "azurerm_api_management_api" "ml_api" {
+  name                = "ml-api"
+  resource_group_name = azurerm_resource_group.main.name
+  api_management_name = azurerm_api_management.main.name
+  revision            = "1"
+  display_name        = "ML Prediction API"
+  path                = "predict"
+  protocols           = ["https"]
+}
+
+resource "azurerm_api_management_api_operation" "predict" {
+  operation_id        = "post-predict"
+  api_name            = azurerm_api_management_api.ml_api.name
+  api_management_name = azurerm_api_management.main.name
+  resource_group_name = azurerm_resource_group.main.name
+  display_name        = "Post prediction request"
+  method              = "POST"
+  url_template        = "/predict"
+}
