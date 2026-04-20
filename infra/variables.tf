@@ -32,3 +32,15 @@ variable "databricks_url" {
   description = "URL to the Databricks MLflow endpoint"
   type        = string
 }
+variable "local_server_url" {
+  description = "URL to the local server"
+  type        = string
+}
+variable "traffic_mode" {
+  description = "Traffic mode: full_cloud, split, full_local"
+  type        = string
+}
+variable "cloud_traffic_percent" {
+  description = "Percentage of traffic routed to cloud, e.g. 90"
+  type        = number
+}
