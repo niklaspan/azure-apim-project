@@ -4,26 +4,43 @@ variable "subscription_id" {
 }
 
 variable "resource_group_name" {
-  description = "Namnet på resource group i Azure"
+  description = "Name of the resource group"
   type        = string
 }
 
 variable "location" {
-  description = "Azure region, ex: swedencentral"
+  description = "Azure region, e.g. swedencentral"
   type        = string
 }
 
 variable "apim_name" {
-  description = "Namnet på APIM-instansen"
+  description = "Name of the APIM instance"
   type        = string
 }
 
 variable "publisher_name" {
-  description = "Namn på APIM-ägaren"
+  description = "Name of the APIM owner"
   type        = string
 }
 
 variable "publisher_email" {
-  description = "Email till APIM-ägaren"
+  description = "Email of the APIM owner"
   type        = string
+}
+
+variable "databricks_url" {
+  description = "URL to the Databricks MLflow endpoint"
+  type        = string
+}
+variable "local_server_url" {
+  description = "URL to the local server"
+  type        = string
+}
+variable "traffic_mode" {
+  description = "Traffic mode: full_cloud, split, full_local"
+  type        = string
+}
+variable "cloud_traffic_percent" {
+  description = "Percentage of traffic routed to cloud, e.g. 90"
+  type        = number
 }
