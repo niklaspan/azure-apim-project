@@ -17,3 +17,13 @@ variable "apim_name" {
   description = "Namnet på APIM-instansen"
   type        = string
 }
+
+variable "publisher_name" {
+  description = "Namn på APIM-ägaren"
+  type        = string
+}
+
+variable "publisher_email" {
+  description = "Email till APIM-ägaren"
+  type        = string
+}
