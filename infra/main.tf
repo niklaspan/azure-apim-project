@@ -44,3 +44,44 @@ resource "azurerm_api_management_api_operation" "predict" {
   method              = "POST"
   url_template        = "/predict"
 }
+resource "azurerm_api_management_api_policy" "traffic_policy" {
+  api_name            = azurerm_api_management_api.ml_api.name
+  api_management_name = azurerm_api_management.main.name
+  resource_group_name = azurerm_resource_group.main.name
+
+  xml_content = <<XML
+<policies>
+  <inbound>
+    <base />
+    <choose>
+      <when condition="@("${var.traffic_mode}" == "full_cloud")">
+        <set-backend-service base-url="${var.databricks_url}" />
+      </when>
+      <when condition="@("${var.traffic_mode}" == "full_local")">
+        <set-backend-service base-url="${var.local_server_url}" />
+      </when>
+      <otherwise>
+        <set-variable name="rand" value="@(new Random().Next(1, 101))" />
+        <choose>
+          <when condition="@((int)context.Variables["rand"] <= ${var.cloud_traffic_percent})">
+            <set-backend-service base-url="${var.databricks_url}" />
+          </when>
+          <otherwise>
+            <set-backend-service base-url="${var.local_server_url}" />
+          </otherwise>
+        </choose>
+      </otherwise>
+    </choose>
+  </inbound>
+  <backend>
+    <base />
+  </backend>
+  <outbound>
+    <base />
+  </outbound>
+  <on-error>
+    <base />
+  </on-error>
+</policies>
+XML
+}
