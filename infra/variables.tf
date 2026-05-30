@@ -44,3 +44,18 @@ variable "cloud_traffic_percent" {
   description = "Percentage of traffic routed to cloud, e.g. 90"
   type        = number
 }
+variable "key_vault_name" {
+  description = "Name of the Key Vault"
+  type        = string
+}
+
+variable "tenant_id" {
+  description = "Azure tenant ID"
+  type        = string
+}
+
+variable "databricks_oauth_token" {
+  description = "OAuth token for Databricks authentication"
+  type        = string
+  sensitive   = true
+}
