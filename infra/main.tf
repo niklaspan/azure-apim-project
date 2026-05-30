@@ -36,4 +36,14 @@ module "api" {
   cloud_traffic_percent = var.cloud_traffic_percent
   databricks_url        = var.databricks_url
   local_server_url      = var.local_server_url
+  key_vault_name        = var.key_vault_name
+}
+
+module "key_vault" {
+  source                 = "./modules/key_vault"
+  name                   = var.key_vault_name
+  resource_group_name    = module.resource_group.name
+  location               = module.resource_group.location
+  tenant_id              = var.tenant_id
+  databricks_oauth_token = var.databricks_oauth_token
 }

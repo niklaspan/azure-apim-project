@@ -27,3 +27,8 @@ variable "local_server_url" {
   description = "URL to the local server"
   type        = string
 }
+
+variable "key_vault_name" {
+  description = "Name of the Key Vault"
+  type        = string
+}
