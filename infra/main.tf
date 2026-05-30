@@ -36,6 +36,7 @@ module "api" {
   cloud_traffic_percent = var.cloud_traffic_percent
   databricks_url        = var.databricks_url
   local_server_url      = var.local_server_url
+  key_vault_name        = var.key_vault_name
 }
 
 module "key_vault" {
