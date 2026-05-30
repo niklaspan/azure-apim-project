@@ -28,6 +28,16 @@ Client → APIM → Databricks MLflow (cloud)
 
 Change mode by updating `traffic_mode` in `terraform.tfvars` and running `terraform apply`.
 
+## OAuth and Key Vault
+APIM uses a System Assigned Managed Identity to authenticate against Azure Key Vault.
+On each request to Databricks, APIM automatically fetches the OAuth token from Key Vault
+and adds it as a Bearer token in the Authorization header.
+
+This means:
+- The token is stored securely in Key Vault, never in code
+- APIM handles token retrieval automatically
+- No credentials are exposed in the application layer
+
 ## Module structure
 infra/
   main.tf              - entry point, calls modules
@@ -35,8 +45,9 @@ infra/
   terraform.tfvars     - your values (never commit this)
   modules/
     resource_group/    - Azure resource group
-    apim/              - API Management instance
-    api/               - API, operation and traffic policy
+    apim/              - API Management instance with Managed Identity
+    api/               - API, operation and traffic policy with OAuth
+    key_vault/         - Key Vault with Databricks OAuth token
 
 ## Requirements
 - Terraform >= 1.0
@@ -64,6 +75,9 @@ infra/
 | local_server_url | URL to the local server |
 | traffic_mode | full_cloud, split, or full_local |
 | cloud_traffic_percent | Percentage routed to cloud, e.g. 90 |
+| key_vault_name | Name of the Key Vault |
+| tenant_id | Azure tenant ID |
+| databricks_oauth_token | OAuth token for Databricks (stored in Key Vault) |
 
 ## Note on state
 The Terraform state file is stored locally. For production use, configure 
